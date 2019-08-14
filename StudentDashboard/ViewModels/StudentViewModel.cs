@@ -50,15 +50,15 @@ namespace StudentDashboard.ViewModels
             }
         }
 
-        private EditMode _TodoListEditMode;
-        public EditMode TodoListEditMode
+        private EditMode _StudentListEditMode;
+        public EditMode StudentListEditMode
         {
-            get { return _TodoListEditMode; }
+            get { return _StudentListEditMode; }
             set
             {
-                if (_TodoListEditMode != value)
+                if (_StudentListEditMode != value)
                 {
-                    _TodoListEditMode = value;
+                    _StudentListEditMode = value;
                     RaisePropertyChanged("TodoListEditMode");
                 }
             }
@@ -79,7 +79,7 @@ namespace StudentDashboard.ViewModels
             _commands.AddCommand("New", x => New(), x => CanNew()/*!CanSave()*/);
             LoadDataAsync().Wait();
 
-            _TodoListEditMode = EditMode.Update;
+            StudentListEditMode = EditMode.Update;
         }
 
         private async Task LoadDataAsync()
@@ -105,7 +105,7 @@ namespace StudentDashboard.ViewModels
             studentList.Add(addedStudent);
             SelectedPerson = addedStudent;
             RecordCount = studentList.Count;
-            TodoListEditMode = EditMode.Update;
+            StudentListEditMode = EditMode.Update;
         }
         private bool CanAdd()
         {
@@ -116,7 +116,7 @@ namespace StudentDashboard.ViewModels
             if (MessageBox.Show
               ("Delete selected row?",
               "Not undoable", MessageBoxButton.YesNo,
-              MessageBoxImage.Question) == MessageBoxResult.Yes)
+              MessageBoxImage.Question) == MessageBoxResult.Yes && studentList.Count > 0)
             {
                 studentsRepository.DeleteStudent(SelectedPerson.ID);
                 studentList.Remove(SelectedPerson);
@@ -127,19 +127,22 @@ namespace StudentDashboard.ViewModels
 
         void Save()
         {
-            //mgr.SaveChanges();
+            if (studentList.Count > 0)
+            {
+                _ = studentsRepository.UpdateStudentAsync(SelectedPerson).Result;
+            }
             RecordCount = studentList.Count;
         }
 
         bool CanSave()
         {
-            return true;//mgr.ChangeTracker.HasChanges();
+            return true;
         }
 
         void New()
         {
             SelectedPerson = new Student.Data.Models.Student();
-            TodoListEditMode = EditMode.Create;
+            StudentListEditMode = EditMode.Create;
         }
         private bool CanNew()
         {
@@ -148,22 +151,8 @@ namespace StudentDashboard.ViewModels
 
         void Cancel()
         {
-            /*foreach (DbEntityEntry entry in mgr.ChangeTracker.Entries())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Modified:
-                        entry.State = EntityState.Unchanged; break;
-                    case EntityState.Added:
-                        entry.State = EntityState.Detached; break;
-                    case EntityState.Deleted:
-                        entry.Reload(); break;
-                    default: break;
-                }
-            }*/
-            LoadDataAsync();
-            //SelectedPerson = new Person();
-
+            LoadDataAsync().Wait();
+            StudentListEditMode = EditMode.Update;
         }
 
         void Close()

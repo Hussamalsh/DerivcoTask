@@ -57,9 +57,6 @@
     </ApplicationDefinition>
     <Compile Include="Common\Converters.cs" />
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Students\StudentView.xaml.cs">
-      <DependentUpon>StudentView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\StudentViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBaseClass.cs" />
     <Page Include="MainWindow.xaml">
@@ -74,10 +71,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Students\StudentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

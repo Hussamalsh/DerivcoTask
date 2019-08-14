@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StudentDashboard"
         mc:Ignorable="d"
         xmlns:c="clr-namespace:StudentDashboard.Common"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Student Dashboard" Height="450" Width="800">
 
 
     <Window.Resources>
@@ -25,7 +25,7 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Background"        Value="LightBlue" />
             <Setter Property="FontWeight"        Value="Bold" />
-            <Setter Property="FontSize"          Value="8" />
+            <Setter Property="FontSize"          Value="13" />
         </Style>
 
     </Window.Resources>
@@ -35,6 +35,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -52,16 +53,31 @@
             AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"/>
 
 
-        <Grid Grid.Row="2" DataContext="{Binding SelectedPerson}">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Label Content="Add New Row:" 
+                   FontWeight="Bold" 
+                   Visibility="{Binding StudentListEditMode, 
+                               Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Create}">
+            </Label>
+            <Label Content="Update New Row:" 
+                   FontWeight="Bold" 
+                   Visibility="{Binding StudentListEditMode, 
+                               Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}">
+            </Label>
+        </StackPanel>
+
+        <Grid Grid.Row="3" DataContext="{Binding SelectedPerson}">
+            
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2.2*" />
+                <ColumnDefinition Width="2.2*" />
+                <ColumnDefinition Width="3.5*" />
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="2.6*" />
             </Grid.ColumnDefinitions>
+
             <TextBox Grid.Column="0" Text="{Binding FirstName}" />
             <TextBox Grid.Column="1" Text="{Binding LastName}" />
             <TextBox Grid.Column="2" Text="{Binding Email}" />
@@ -71,15 +87,14 @@
             <TextBox Grid.Column="6" Text="{Binding Phone}" />
         </Grid>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding Commands.Add}" Visibility="{Binding StudentListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Create}"  Content="Add"    />
 
-            <Button Command="{Binding Commands.New}" Visibility="{Binding TodoListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}"  Content="New"    />
-            <Button Command="{Binding Commands.Save}" Visibility="{Binding TodoListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}"  Content="Save"   />
-            <Button Command="{Binding Commands.Cancel}" Visibility="{Binding TodoListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}" Content="Cancel" />
-            <Button Command="{Binding Commands.Delete}" Visibility="{Binding TodoListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}" Content="Delete" />
-            <Button Command="{Binding Commands.Close}" Visibility="{Binding TodoListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}" Content="Close"  />
-
-            <Button Command="{Binding Commands.Add}" Visibility="{Binding TodoListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Create}"  Content="Add"    />
+            <Button Command="{Binding Commands.New}" Visibility="{Binding StudentListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}"  Content="New"    />
+            <Button Command="{Binding Commands.Save}" Visibility="{Binding StudentListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}"  Content="Update"   />
+            <Button Command="{Binding Commands.Cancel}" Visibility="{Binding StudentListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Create}" Content="Cancel" />
+            <Button Command="{Binding Commands.Delete}" Visibility="{Binding StudentListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}" Content="Delete" />
+            <Button Command="{Binding Commands.Close}" Visibility="{Binding StudentListEditMode, Converter={StaticResource editModeToVisibilityConverter}, ConverterParameter=Update}" Content="Close"  />
         </StackPanel>
 
     </Grid>
