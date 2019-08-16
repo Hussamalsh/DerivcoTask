@@ -67,6 +67,8 @@
     <Build Include="StoredProcedures\spStudent_GetAll.sql" />
     <Build Include="StoredProcedures\spStudent_GetById.sql" />
     <Build Include="StoredProcedures\spStudent_AddStudent.sql" />
+    <Build Include="StoredProcedures\spStudent_UpdateStudent.sql" />
+    <Build Include="StoredProcedures\spStudent_DeleteById.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\Student.Database.publish.xml" />

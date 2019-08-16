@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace StudentWebApi.Controllers
+namespace StudentWebApi3.Controllers
 {
     public class StudentController : ApiController
     {
@@ -29,7 +29,7 @@ namespace StudentWebApi.Controllers
         // GET: api/Student/5
         public async Task<Student.Data.Models.Student> GetAsync(Guid id)
         {
-            var student =  await studentsRepo.GetStudentAsync(id);
+            var student = await studentsRepo.GetStudentAsync(id);
             return student;
         }
 
@@ -41,7 +41,7 @@ namespace StudentWebApi.Controllers
             {
                 Content = new ObjectContent<object>(new
                 {
-                   Message = "new student created"
+                    Message = "new student created"
                 }, Configuration.Formatters.JsonFormatter)
             };
         }
@@ -55,7 +55,7 @@ namespace StudentWebApi.Controllers
             {
                 Content = new ObjectContent<object>(new
                 {
-                   Message = "the student updated successfully"
+                    Message = "the student updated successfully"
                 }, Configuration.Formatters.JsonFormatter)
             };
         }
