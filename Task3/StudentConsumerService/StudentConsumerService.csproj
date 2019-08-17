@@ -51,6 +51,12 @@
     <Compile Include="Heartbeat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="xx\DapperHelper.cs" />
+    <Compile Include="xx\Heartbeat.cs" />
+    <Compile Include="xx\Message.cs" />
+    <Compile Include="xx\Program.cs" />
+    <Compile Include="xx\Student.cs" />
+    <Compile Include="xx\WorkerQueueConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
