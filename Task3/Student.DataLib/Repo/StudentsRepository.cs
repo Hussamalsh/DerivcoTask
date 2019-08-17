@@ -5,32 +5,33 @@ using System.Text;
 using System.Threading.Tasks;
 using Student.Data.Models;
 using Student.Data2.Persistence;
+using Student.DataLib.Persistence;
 
 namespace Student.Data.Repo
 {
     public class StudentsRepository : IStudentsRepository
     {
-        SqlHelper sqlHelper;
+        DapperHelper dapperHelper;
         public StudentsRepository()
         {
-            sqlHelper = new SqlHelper();
+            dapperHelper = new DapperHelper();
         }
 
         public Task<Models.Student> AddStudentAsync(Models.Student student)
         {
-            sqlHelper.ExecuteProcedure_AddStudent(student);
+            dapperHelper.ExecuteProcedure_AddStudent(student);
             return Task.FromResult(new Models.Student());
         }
 
-        public void DeleteStudent(Guid studentId) => sqlHelper.ExecuteProcedure_DeleteById(studentId);
+        public void DeleteStudent(Guid studentId) => dapperHelper.ExecuteProcedure_DeleteById(studentId);
 
-        public Task<Models.Student> GetStudentAsync(Guid id) => Task.FromResult(sqlHelper.ExecuteProcedure_GetById(id));
+        public Task<Models.Student> GetStudentAsync(Guid id) => Task.FromResult(dapperHelper.ExecuteProcedure_GetById(id));
 
-        public Task<List<Models.Student>> GetStudentsAsync() => Task.FromResult(sqlHelper.ExecuteProcedure_GetAllStudent());
+        public Task<List<Models.Student>> GetStudentsAsync() => Task.FromResult(dapperHelper.ExecuteProcedure_GetAllStudent());
 
         public Task<bool> UpdateStudentAsync(Models.Student student)
         {
-            sqlHelper.ExecuteProcedure_UpdateStudent(student);
+            dapperHelper.ExecuteProcedure_UpdateStudent(student);
             return (Task.FromResult(true));
         }
     }
