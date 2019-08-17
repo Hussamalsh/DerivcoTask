@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
+using Student.DataLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Student.DataLib.RabbitMQ
 
         public void SendMessage(Data.Models.Student message, string type)
         {
-            var obj = new { Message = message, Type = type };
+            var obj = new Message { Student = message, Type = type };
             var payload = JsonConvert.SerializeObject(obj);
             _model.BasicPublish("", QueueName,true, null, Encoding.ASCII.GetBytes(payload));
         }
