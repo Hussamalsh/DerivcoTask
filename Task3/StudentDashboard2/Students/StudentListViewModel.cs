@@ -1,5 +1,6 @@
 ﻿using Student.Data.Models;
 using Student.Data.Repo;
+using Student.DataLib.RabbitMQ;
 using StudentDashboard2.Common;
 using StudentDashboard2.Services;
 using System;
@@ -74,7 +75,7 @@ namespace StudentDashboard2.Students
         {
             studentList = new ObservableCollection<Student.Data.Models.Student>();
             
-            studentService = new StudentService(new DefaultHttpClientAccessor());
+            studentService = new StudentService(new DefaultHttpClientAccessor(), new WorkerQueueProducer());
 
             _commands = new CommandMap();
             _commands.AddCommand("Add", x => Add(), x => CanAdd()/*!CanSave()*/);
