@@ -19,9 +19,9 @@ namespace StudentConsumerService
 
                 x.RunAsLocalSystem();
 
-                x.SetServiceName("HeartbeatService");
-                x.SetDisplayName("Heartbeat Service");
-                x.SetDescription("This is a student message queue");
+                x.SetServiceName("StudentService");
+                x.SetDisplayName("Student Service");
+                x.SetDescription("This is a student message queue background service");
             });
 
             var exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());

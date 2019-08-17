@@ -33,8 +33,8 @@ namespace StudentDashboard2.Students
         {
             get
             {
-                var student = studentService.GetStudent(selectedperson.ID).Result;
-                return student;
+                selectedperson = studentService.GetStudent(selectedperson.ID).Result;
+                return selectedperson;
             }
             set
             {
@@ -137,7 +137,7 @@ namespace StudentDashboard2.Students
         {
             if (studentList.Count > 0)
             {
-               _ = studentService.UpdateStudent(SelectedPerson).Result;
+               _ = studentService.UpdateStudent(selectedperson).Result;
             }
             RecordCount = studentList.Count;
         }

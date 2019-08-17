@@ -1,5 +1,6 @@
 ﻿using Student.DataLib.RabbitMQ;
 using System;
+using System.IO;
 using System.Timers;
 
 namespace StudentConsumerService
@@ -19,6 +20,8 @@ namespace StudentConsumerService
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             //call the consumer 
+            string[] lines = new string[] { "Inside TimerElapsed" };
+            File.AppendAllLines(@"C:\Temp\Demos\Heartbeat.txt", lines);
             workerQueueConsumer.Receive();
         }
 

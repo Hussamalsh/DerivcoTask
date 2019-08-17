@@ -32,7 +32,7 @@ namespace StudentDashboard2.Common
             //_appSetings = appSetings.Value;
 
             HttpClient = new HttpClient();
-            string url = "http://localhost:56266/";
+            string url = "http://localhost:4497/";
             if (!string.IsNullOrEmpty(url/*_appSetings.AudioNetworkApiUrl*/))
             {
 
