@@ -1,5 +1,4 @@
-﻿using Dapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
+    /*
     public class DapperHelper
     {
         private IDbConnection db;
@@ -43,5 +43,5 @@ namespace ConsoleApp2
         {
             this.db.Execute("spStudent_DeleteById", new { id }, commandType: CommandType.StoredProcedure);
         }
-    }
+    }*/
 }

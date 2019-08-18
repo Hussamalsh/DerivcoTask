@@ -72,5 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\Student.Database.publish.xml" />
+    <None Include="local.Student.Database.publish.publish.xml" />
   </ItemGroup>
 </Project>

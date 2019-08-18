@@ -7,6 +7,7 @@ using Topshelf;
 
 namespace ConsoleApp2
 {
+    /*
     class Program
     {
         static void Main(string[] args)
@@ -32,4 +33,6 @@ namespace ConsoleApp2
             Environment.ExitCode = exitCodeValue;
         }
     }
+*/
+
 }

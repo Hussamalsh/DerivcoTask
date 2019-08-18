@@ -33,12 +33,19 @@ namespace StudentDashboard2.Students
         {
             get
             {
-                selectedperson = studentService.GetStudent(selectedperson.ID).Result;
+                 /*else
+                {
+                    selectedperson = new Student.Data.Models.Student();
+                }*/
                 return selectedperson;
             }
             set
             {
-                selectedperson = value;
+                if (value != null)
+                {
+                    selectedperson = studentService.GetStudent(value.ID).Result;
+                }
+                //selectedperson = value;
                 RaisePropertyChanged("SelectedPerson");
             }
         }
@@ -109,11 +116,18 @@ namespace StudentDashboard2.Students
         //This goes in Initialization/constructor
         void Add()
         {
-            var addedStudent = studentService.AddStudent(SelectedPerson).Result;
-            studentList.Add(addedStudent);
-            SelectedPerson = addedStudent;
-            RecordCount = studentList.Count;
-            StudentListEditMode = EditMode.Update;
+            if (SelectedPerson != null)
+            {
+                var addedStudent = studentService.AddStudent(SelectedPerson).Result;
+                studentList.Add(addedStudent);
+                SelectedPerson = addedStudent;
+                RecordCount = studentList.Count;
+                StudentListEditMode = EditMode.Update;
+            }
+            else
+            {
+                MessageBox.Show("Couldn't add the student", "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Question);
+            }
         }
         private bool CanAdd()
         {
@@ -138,6 +152,9 @@ namespace StudentDashboard2.Students
             if (studentList.Count > 0)
             {
                _ = studentService.UpdateStudent(selectedperson).Result;
+                Student.Data.Models.Student item = this.studentList.FirstOrDefault(x => x.ID == selectedperson.ID);
+                int index = this.studentList.IndexOf(item);
+                this.studentList[index] = selectedperson;
             }
             RecordCount = studentList.Count;
         }

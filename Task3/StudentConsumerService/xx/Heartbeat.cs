@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using StudentConsumerService.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,7 @@ using System.Timers;
 
 namespace ConsoleApp2
 {
+    /*
     public class Heartbeat
     {
         //private readonly Timer _timer;
@@ -44,7 +46,7 @@ namespace ConsoleApp2
             workerQueueConsumer.Receive();
         }*/
 
-        public void Start()
+      /*  public void Start()
         {
             //_timer.Start();
             string[] lines = new string[] { "Inside Start" };
@@ -81,7 +83,7 @@ namespace ConsoleApp2
                     // Received message is not valid.
                     /* WinLogger.Log.Error(
                          "Errror Processing Message: " + receivedMessage + " :" + e.Message);*/
-                    lines = new string[] { "Errror Processing Message: " + receivedMessage + " :" + e.Message };
+   /*                 lines = new string[] { "Errror Processing Message: " + receivedMessage + " :" + e.Message };
                     File.AppendAllLines(@"C:\Temp\Demos\Heartbeat.txt", lines);
                     //response = "";
                 }
@@ -133,4 +135,6 @@ namespace ConsoleApp2
             this.channel.Dispose();
         }
     }
+*/
+
 }

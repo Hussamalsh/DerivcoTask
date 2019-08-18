@@ -59,7 +59,7 @@ namespace StudentDashboard2.Services
                 var contents = await response.Content.ReadAsStringAsync();
                 return student;
             }*/
-            return new Student.Data.Models.Student();
+            return student;
         }
 
         public async Task<bool> UpdateStudent(Student.Data.Models.Student student)

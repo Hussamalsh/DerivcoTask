@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
+    /*
     public class WorkerQueueConsumer : IDisposable
     {
         private ConnectionFactory _factory;
@@ -84,7 +85,7 @@ namespace ConsoleApp2
 
                     };*/
 
-                    channel.BasicConsume(QueueName, true, consumer);
+             /*       channel.BasicConsume(QueueName, true, consumer);
                 }
             }
         }
@@ -96,4 +97,5 @@ namespace ConsoleApp2
             //_connection.Dispose();
         }
     }
+*/
 }

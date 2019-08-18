@@ -25,6 +25,10 @@ namespace StudentDashboard2.Students
         public StudentListView()
         {
             InitializeComponent();
+
+            vm = new StudentListViewModel();
+            //vm.CallingForm = this; //so that the ViewModel can close the form
+            DataContext = vm;
         }
         private void DataGrid_AutoGeneratingColumn(object sender,
                       System.Windows.Controls.DataGridAutoGeneratingColumnEventArgs e)
@@ -32,6 +36,15 @@ namespace StudentDashboard2.Students
             if (e.Column.Header.ToString() == "ID")
             {
                 e.Column.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string[] headings = { "Hidden", "First", "Last", "Street Address", "City", "ST", "ZIP code", "Tel" };
+            for (int I = 0; I < headings.Length; I++)
+            {
+                grid.Columns[I].Header = headings[I];
             }
         }
     }
