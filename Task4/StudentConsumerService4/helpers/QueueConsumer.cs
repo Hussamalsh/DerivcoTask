@@ -1,4 +1,7 @@
-﻿using Microsoft.Azure.ServiceBus;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 using StudentConsumerService4.Services;
 using System;
@@ -21,8 +24,22 @@ namespace StudentConsumerService4.helpers
 
         private IStudentService studentService;
 
+        private TelemetryClient telemetry;
+        private TelemetryConfiguration configuration;
+
         public QueueConsumer()
         {
+            // you may use different options to create configuration as shown later in this article
+            configuration = TelemetryConfiguration.CreateDefault();
+            configuration.InstrumentationKey = "92ca92dc-9095-447b-9e53-4a8af43a4039";
+            configuration.TelemetryInitializers.Add(new HttpDependenciesParsingTelemetryInitializer());
+            telemetry = new TelemetryClient(configuration);
+            telemetry.InstrumentationKey = "92ca92dc-9095-447b-9e53-4a8af43a4039";
+            InitializeDependencyTracking(configuration);
+            //telemetry.Context.User.Id = "...";
+            //telemetry.Context.Device.Id = "...";
+
+
             queueClient = new QueueClient(ServiceBusConnectionString, QueueName);
 
             studentService = new StudentService(new DefaultHttpClientAccessor());
@@ -54,6 +71,8 @@ namespace StudentConsumerService4.helpers
             //Use Service
             string receivedMessage = Encoding.UTF8.GetString(message.Body);
             ProcessMessage(receivedMessage);
+
+            telemetry.TrackEvent("Received new msg => "+receivedMessage);
 
             // Complete the message so that it is not received again.
             // This can be done only if the queueClient is created in ReceiveMode.PeekLock mode (which is default).
@@ -93,6 +112,7 @@ namespace StudentConsumerService4.helpers
         private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
         {
             Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
+            telemetry.TrackException(exceptionReceivedEventArgs.Exception);
             var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
             Console.WriteLine("Exception context for troubleshooting:");
             Console.WriteLine($"- Endpoint: {context.Endpoint}");
@@ -104,6 +124,32 @@ namespace StudentConsumerService4.helpers
         public void Dispose()
         {
             queueClient.CloseAsync().Wait();
+            // before exit, flush the remaining data
+            telemetry.Flush();
+        }
+
+        private DependencyTrackingTelemetryModule InitializeDependencyTracking(TelemetryConfiguration configuration)
+        {
+            var module = new DependencyTrackingTelemetryModule();
+
+            // prevent Correlation Id to be sent to certain endpoints. You may add other domains as needed.
+            module.ExcludeComponentCorrelationHttpHeadersOnDomains.Add("core.windows.net");
+            module.ExcludeComponentCorrelationHttpHeadersOnDomains.Add("core.chinacloudapi.cn");
+            module.ExcludeComponentCorrelationHttpHeadersOnDomains.Add("core.cloudapi.de");
+            module.ExcludeComponentCorrelationHttpHeadersOnDomains.Add("core.usgovcloudapi.net");
+            module.ExcludeComponentCorrelationHttpHeadersOnDomains.Add("localhost");
+            module.ExcludeComponentCorrelationHttpHeadersOnDomains.Add("127.0.0.1");
+
+            // enable known dependency tracking, note that in future versions, we will extend this list. 
+            // please check default settings in https://github.com/Microsoft/ApplicationInsights-dotnet-server/blob/develop/Src/DependencyCollector/DependencyCollector/ApplicationInsights.config.install.xdt
+
+            module.IncludeDiagnosticSourceActivities.Add("Microsoft.Azure.ServiceBus");
+            module.IncludeDiagnosticSourceActivities.Add("Microsoft.Azure.EventHubs");
+
+            // initialize the module
+            module.Initialize(configuration);
+
+            return module;
         }
     }
 }

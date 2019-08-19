@@ -84,7 +84,7 @@ namespace StudentDashBoard4.Services
             HttpResponseMessage response = await _httpclient.DeleteAsync("api/student/" + id).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                var contents = await response.Content.ReadAsStringAsync();
+                var contents = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
         }
     }

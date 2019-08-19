@@ -141,7 +141,7 @@ namespace StudentDashBoard4.Students
               "Not undoable", MessageBoxButton.YesNo,
               MessageBoxImage.Question) == MessageBoxResult.Yes && studentList.Count > 0)
             {
-                studentService.deleteStudent(SelectedPerson.RowKey).Wait();
+                studentService.deleteStudent(SelectedPerson.RowKey).ConfigureAwait(false);
                 Student item = this.studentList.FirstOrDefault(x => x.RowKey == selectedperson.RowKey);
                 int index = this.studentList.IndexOf(item);
 
