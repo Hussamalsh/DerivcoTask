@@ -19,7 +19,6 @@ namespace StudentFunctionApp
             //builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
             //builder.AddAzureStorage();
             //builder.Services.AddAzureStorage();
-
         }
     }
 }

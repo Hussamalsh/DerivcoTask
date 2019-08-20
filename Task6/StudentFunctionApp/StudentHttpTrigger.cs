@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage;
+using StudentFunctionApp.Models;
 
 namespace StudentFunctionApp
 {
@@ -112,7 +113,7 @@ namespace StudentFunctionApp
              string id,
              ILogger log)
         {
-            log.LogInformation("C# AddStudent HTTP trigger function processed a request.");
+            log.LogInformation("C# UpdateStudent HTTP trigger function processed a request.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var updated = JsonConvert.DeserializeObject<Student>(requestBody);
@@ -137,6 +138,72 @@ namespace StudentFunctionApp
             await cloudTable.ExecuteAsync(replaceOperation);
 
             return new OkObjectResult(existingRow);
+        }
+
+        /***************************************************************** Accept Queues ***************************************************************************/
+
+        [FunctionName("AddStudentQueueTrigger")]
+        public async Task Run([ServiceBusTrigger("student", Connection = "ServiceBusConnection")]
+                               string myQueueItem,
+                               [Table("student")] CloudTable cloudTable,
+                               ILogger log)
+        {
+            log.LogInformation("C# AddStudentQueueTrigger HTTP trigger function processed a request.");
+
+            var msg = JsonConvert.DeserializeObject<Message>(myQueueItem);
+
+            var msgType = msg.Type;
+            var student = msg.Student;
+
+            if (msgType.Equals("add"))
+            {
+                //Add
+                var newStudent = new Student
+                {
+                    PartitionKey = "Student",
+                    RowKey = Guid.NewGuid().ToString(),
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    Email = student.Email,
+                    Address = student.Address,
+                    City = student.City,
+                    Zip = student.Zip,
+                    Phone = student.Phone
+                };
+
+                var insertOperation = TableOperation.Insert(newStudent);
+                await cloudTable.ExecuteAsync(insertOperation);
+
+                //return new OkObjectResult(newStudent);
+                //await queueClient.CompleteAsync(message.SystemProperties.LockToken);
+            }
+            else
+            {
+                //Update
+                var findOperation = TableOperation.Retrieve<Student>("Student", student.RowKey);
+                var findResult = await cloudTable.ExecuteAsync(findOperation);
+                if (findResult.Result == null)
+                {
+                    //return new NotFoundResult();
+                    log.LogError("NotFoundResult =>" + myQueueItem);
+                    return;
+                }
+
+                var existingRow = (Student)findResult.Result;
+
+                existingRow.FirstName = student.FirstName;
+                existingRow.LastName = student.LastName;
+                existingRow.Email = student.Email;
+                existingRow.Address = student.Address;
+                existingRow.City = student.City;
+                existingRow.Zip = student.Zip;
+                existingRow.Phone = student.Phone;
+
+                var replaceOperation = TableOperation.Replace(existingRow);
+                await cloudTable.ExecuteAsync(replaceOperation);
+
+                //return new OkObjectResult(existingRow);
+            }
         }
 
         /*

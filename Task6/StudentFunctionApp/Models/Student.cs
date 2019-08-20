@@ -1,9 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace StudentFunctionApp
+namespace StudentFunctionApp.Models
 {
     public class Student : TableEntity
     {

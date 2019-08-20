@@ -39,7 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentConsumerService4", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Task6", "Task6", "{113A364E-B29E-4A55-9C31-D959A23C32F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentFunctionApp", "Task6\StudentFunctionApp\StudentFunctionApp.csproj", "{CCB09B66-2541-40DD-BBC4-CF3A3DE72BF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentFunctionApp", "Task6\StudentFunctionApp\StudentFunctionApp.csproj", "{CCB09B66-2541-40DD-BBC4-CF3A3DE72BF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDashboard", "Task6\StudentDashboard\StudentDashboard.csproj", "{67401BD7-6510-4C81-BD62-9D9C0807B3A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{CCB09B66-2541-40DD-BBC4-CF3A3DE72BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCB09B66-2541-40DD-BBC4-CF3A3DE72BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCB09B66-2541-40DD-BBC4-CF3A3DE72BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67401BD7-6510-4C81-BD62-9D9C0807B3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67401BD7-6510-4C81-BD62-9D9C0807B3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67401BD7-6510-4C81-BD62-9D9C0807B3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67401BD7-6510-4C81-BD62-9D9C0807B3A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{6EA90365-C915-4DB1-A571-DF7DD92A9C96} = {D13C15B8-0DFD-4A9A-982A-82E86D16F86A}
 		{2FF1CB2F-2930-44C1-891A-57C2D5F0A626} = {D13C15B8-0DFD-4A9A-982A-82E86D16F86A}
 		{CCB09B66-2541-40DD-BBC4-CF3A3DE72BF7} = {113A364E-B29E-4A55-9C31-D959A23C32F9}
+		{67401BD7-6510-4C81-BD62-9D9C0807B3A8} = {113A364E-B29E-4A55-9C31-D959A23C32F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {176AD267-A409-410E-8E7B-4D08FC41A10E}
