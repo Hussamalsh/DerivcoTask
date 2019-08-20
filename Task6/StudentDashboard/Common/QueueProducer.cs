@@ -43,7 +43,7 @@ namespace StudentDashboard.Common
 
         public void Dispose()
         {
-            queueClient.CloseAsync().Wait();
+            queueClient.CloseAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
 

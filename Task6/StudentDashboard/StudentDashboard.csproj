@@ -150,6 +150,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\MTObservableCollection.cs" />
     <Compile Include="ContainerHelper.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Services\IStudentService.cs" />

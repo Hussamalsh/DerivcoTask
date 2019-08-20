@@ -13,7 +13,7 @@ namespace StudentDashboard
         public MainWindowViewModel()
         {
             studentListViewModel = ContainerHelper.Container.Resolve<StudentListViewModel>();
-            CurrentViewModel = studentListViewModel;  // new StudentListViewModel();
+            CurrentViewModel = studentListViewModel;
         }
     }
 }

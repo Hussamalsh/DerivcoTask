@@ -47,7 +47,7 @@ namespace StudentDashboard.Students
         }
 
 
-        public ObservableCollection<Student> studentList { get; set; }
+        public MTObservableCollection<Student> studentList { get; set; }
         
         public CommandMap _commands;
         public CommandMap Commands
@@ -72,31 +72,32 @@ namespace StudentDashboard.Students
             }
         }
 
-        public IStudentService studentService;
+        public readonly IStudentService studentService;
         
         public StudentListViewModel(IStudentService studentService)
         {
-            this.studentService = studentService;//new StudentService(new DefaultHttpClientAccessor());
+            this.studentService = studentService;
 
-            studentList = new ObservableCollection<Student>();
+            studentList = new MTObservableCollection<Student>();
 
             _commands = new CommandMap();
-            _commands.AddCommand("Add", x => Add(), x => CanAdd()/*!CanSave()*/);
-
-            _commands.AddCommand("Save", x => Save(), x => CanSave());
-            _commands.AddCommand("Cancel", x => Cancel(), x => CanSave());
-            _commands.AddCommand("Delete", x => Delete(), x => CanAdd()/*!CanSave()*/);
+            _commands.AddCommand("Add", x => AddAsync().GetAwaiter().GetResult(), x => CanAdd()/*!CanSave()*/);
+            _commands.AddCommand("Save", x => SaveAsync().GetAwaiter().GetResult(), x => CanSave());
+            _commands.AddCommand("Cancel", x => CancelAsync().GetAwaiter().GetResult(), x => CanSave());
+            _commands.AddCommand("Delete", x => DeleteAsync().GetAwaiter().GetResult(), x => CanAdd()/*!CanSave()*/);
             _commands.AddCommand("Close", x => Close(), x => CanAdd()/*!CanSave()*/);
             _commands.AddCommand("New", x => New(), x => CanNew()/*!CanSave()*/);
-            LoadDataAsync();
+
+            LoadDataAsync().GetAwaiter().GetResult();
 
             StudentListEditMode = EditMode.Update;
         }
 
-        private void LoadDataAsync()
+        //This goes in Initialization/constructor
+        private async Task LoadDataAsync()
         {
             studentList.Clear();
-            var query = studentService.GetStudents().Result;
+            var query = await studentService.GetStudents().ConfigureAwait(false);
             foreach (Student s in query)
             {
                 studentList.Add(s);
@@ -108,13 +109,12 @@ namespace StudentDashboard.Students
                 SelectedPerson = studentList[0];
             }
         }
-
-        //This goes in Initialization/constructor
-        void Add()
+        //add
+        async Task AddAsync()
         {
             if (SelectedPerson != null)
             {
-                var addedStudent = studentService.AddStudent(SelectedPerson).Result;
+                var addedStudent = await studentService.AddStudent(SelectedPerson).ConfigureAwait(false);
                 studentList.Add(addedStudent);
                 SelectedPerson = addedStudent;
                 RecordCount = studentList.Count;
@@ -129,14 +129,16 @@ namespace StudentDashboard.Students
         {
             return (true);
         }
-        void Delete()
+
+        //delete
+        async Task DeleteAsync()
         {
             if (MessageBox.Show
               ("Delete selected row?",
               "Not undoable", MessageBoxButton.YesNo,
               MessageBoxImage.Question) == MessageBoxResult.Yes && studentList.Count > 0)
             {
-                studentService.deleteStudent(SelectedPerson.RowKey).ConfigureAwait(false);
+                await studentService.deleteStudent(SelectedPerson.RowKey).ConfigureAwait(false);
                 Student item = this.studentList.FirstOrDefault(x => x.RowKey == selectedperson.RowKey);
                 int index = this.studentList.IndexOf(item);
 
@@ -147,11 +149,12 @@ namespace StudentDashboard.Students
             }
         }
 
-        void Save()
+        //update
+        async Task SaveAsync()
         {
             if (studentList.Count > 0)
             {
-               _ = studentService.UpdateStudent(selectedperson).Result;
+               _ = await studentService.UpdateStudent(selectedperson).ConfigureAwait(false);
                 Student item = this.studentList.FirstOrDefault(x => x.RowKey == selectedperson.RowKey);
                 int index = this.studentList.IndexOf(item);
                 this.studentList[index] = selectedperson;
@@ -174,9 +177,9 @@ namespace StudentDashboard.Students
             return (true);
         }
 
-        void Cancel()
+        async Task CancelAsync()
         {
-            LoadDataAsync();
+            await LoadDataAsync().ConfigureAwait(false);
             StudentListEditMode = EditMode.Update;
         }
 
